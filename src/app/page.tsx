@@ -122,7 +122,7 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
         height: "auto"
       }}>
 
-        <Image alt={fullImageSrc} id="full-image" src={fullImageSrc} style={{ position: "inherit", width: "auto", height: "auto" }} loading="lazy" />
+        <Image width={1280} height={720} alt={fullImageSrc} id="full-image" src={fullImageSrc} loading="lazy" />
         <div style={{ position: "absolute", width: "auto", color: "red", padding: "20px" }}>{`${currentFrame - segment.frame_start}/${segment.frame_end - segment.frame_start}`}</div>
         <CloseIcon onClick={function (e) {
           setFullImageSrc("");
@@ -191,7 +191,7 @@ const ItemWrapper = ({ index, result, setFullImageSrc, setIsVisible, setSegment,
     </div>
 
     <Tooltip title={<h1 style={{ fontSize: "18px" }}>{result.text}</h1>} arrow>
-      <Image alt={result.text} style={{ width: "100%", height: "180px" }}
+      <Image width={320} height={180} alt={result.text}
         onClick={function (e) {
           setFullImageSrc(`${host}/image?frame=${result.frame_start}&episode=${result.episode}`);
           setSegment({ episode: result.episode, frame_current: result.frame_start, frame_start: result.frame_start, frame_end: result.frame_end })
