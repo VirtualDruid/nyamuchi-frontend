@@ -6,6 +6,7 @@ import moment from "moment";
 
 import CloseIcon from '@mui/icons-material/Close';
 import { Tooltip } from "@mui/material";
+import Image from "next/image";
 const episodes = [
   "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 ]
@@ -24,7 +25,7 @@ export default function Home() {
   const [episode, setEpisode] = useState("1-3");
   const handleEpisodeOnChange = (e: React.FormEvent<HTMLSelectElement>) => {
     setEpisode(e.currentTarget.value);
-    setSegment({ episode: episode, ...segment })
+    setSegment({...segment, episode:episode})
   }
 
   const debounceFetchResultList = useCallback(
@@ -121,7 +122,7 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
         height: "auto"
       }}>
 
-        <img id="full-image" src={fullImageSrc} style={{ position: "inherit", width: "auto", height: "auto" }} loading="lazy" />
+        <Image alt={fullImageSrc} id="full-image" src={fullImageSrc} style={{ position: "inherit", width: "auto", height: "auto" }} loading="lazy" />
         <div style={{ position: "absolute", width: "auto", color: "red", padding: "20px" }}>{`${currentFrame - segment.frame_start}/${segment.frame_end - segment.frame_start}`}</div>
         <CloseIcon onClick={function (e) {
           setFullImageSrc("");
@@ -141,8 +142,6 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
 
     </div>)
 }
-
-
 const gridComponents = {
   List: forwardRef(({ style, children, ...props }: { style: any, children: any }, ref: any) => (
     <div
@@ -192,7 +191,7 @@ const ItemWrapper = ({ index, result, setFullImageSrc, setIsVisible, setSegment,
     </div>
 
     <Tooltip title={<h1 style={{ fontSize: "18px" }}>{result.text}</h1>} arrow>
-      <img style={{ width: "100%", height: "180px" }}
+      <Image alt={result.text} style={{ width: "100%", height: "180px" }}
         onClick={function (e) {
           setFullImageSrc(`${host}/image?frame=${result.frame_start}&episode=${result.episode}`);
           setSegment({ episode: result.episode, frame_current: result.frame_start, frame_start: result.frame_start, frame_end: result.frame_end })
