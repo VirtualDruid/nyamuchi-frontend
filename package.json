@@ -2,6 +2,7 @@
   "name": "nyamuchi-frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://virtualdruid.github.io/nyamuchi-frontend/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
