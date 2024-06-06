@@ -4,6 +4,7 @@ const nextConfig = {
         domains: ['34.84.210.183'],
     },
     output: 'export',
+    basePath: '/nyamuchi-frontend',
 };
 
 export default nextConfig;
