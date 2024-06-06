@@ -10,7 +10,7 @@ import Image from "next/image";
 const episodes = [
   "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 ]
-const host = 'http://34.84.210.183:8080';
+const host = 'https://34.84.210.183:8080';
 export default function Home() {
 
   const [segment, setSegment] = useState({ episode: "", frame_current: -1, frame_start: -1, farme_end: -1 })
