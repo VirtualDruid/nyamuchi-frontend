@@ -199,7 +199,7 @@ const ItemWrapper = ({ index, result, setFullImageSrc, setIsVisible, setSegment,
           setCurrentFrame(result.frame_start);
         }}
         loading="lazy"
-        src={`/${result.episode}__${result.frame_start}.jpg`} />
+        src={`/static/${result.episode}__${result.frame_start}.jpg`} />
     </Tooltip>
 
   </div>
