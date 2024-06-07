@@ -6,7 +6,6 @@ import moment from "moment";
 
 import CloseIcon from '@mui/icons-material/Close';
 import { Tooltip } from "@mui/material";
-import Image from "next/image";
 const episodes = [
   "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 ]
@@ -40,7 +39,7 @@ export default function Home() {
         setResultList([]);
       }
 
-    }, 100), [])
+    }, 200), [])
 
 
   useEffect(() => {
@@ -122,7 +121,7 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
         height: "auto"
       }}>
 
-        <Image width={1280} height={720} alt={fullImageSrc} id="full-image" src={fullImageSrc} loading="lazy" />
+        <img style={{width:"1280px", height:"720px"}} id="full-image" src={fullImageSrc} loading="lazy" />
         <div style={{ position: "absolute", width: "auto", color: "red", padding: "20px" }}>{`${currentFrame - segment.frame_start}/${segment.frame_end - segment.frame_start}`}</div>
         <CloseIcon onClick={function (e) {
           setFullImageSrc("");
@@ -191,16 +190,16 @@ const ItemWrapper = ({ index, result, setFullImageSrc, setIsVisible, setSegment,
     </div>
 
     <Tooltip title={<h1 style={{ fontSize: "18px" }}>{result.text}</h1>} arrow>
-      <Image width={320} height={180} alt={result.text}
+      <img style={{width:"100%", height:"180px"}}
         onClick={function (e) {
+          //initial set
           setFullImageSrc(`${host}/image?frame=${result.frame_start}&episode=${result.episode}`);
           setSegment({ episode: result.episode, frame_current: result.frame_start, frame_start: result.frame_start, frame_end: result.frame_end })
           setIsVisible(true);
           setCurrentFrame(result.frame_start);
         }}
         loading="lazy"
-        crossOrigin="anonymous"
-        src={`${host}/thumb?frame=${result.frame_start}&episode=${result.episode}`} />
+        src={`/${result.episode}__${result.frame_start}.jpg`} />
     </Tooltip>
 
   </div>

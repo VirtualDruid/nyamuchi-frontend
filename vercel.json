@@ -1,15 +1,4 @@
 {
-    "images": {
-        "sizes":[720, 320],
-        "remotePatterns": [
-            {
-                "protocol": "https",
-                "hostname": "anon-tokyo.com",
-                "port": "443",
-                "pathname": "/**"
-            }
-        ]
-    },
     "headers": [
         {
             "source": "/(.*)",
