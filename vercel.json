@@ -5,7 +5,7 @@
             {
                 "protocol": "https",
                 "hostname": "anon-tokyo.com",
-                "port": "",
+                "port": "443",
                 "pathname": "/**"
             }
         ]
