@@ -123,7 +123,7 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
         height: "auto"
       }}>
 
-        <img style={{width:"1280px", height:"720px"}} id="full-image" src={fullImageSrc} loading="lazy" />
+        <img style={{width:"100%", height:"fit-content"}} id="full-image" src={fullImageSrc} loading="lazy" />
         <div style={{ position: "absolute", width: "auto", color: "red", padding: "20px" }}>{`${currentFrame - segment.frame_start}/${segment.frame_end - segment.frame_start}`}</div>
         <CloseIcon onClick={function (e) {
           setFullImageSrc("");
@@ -160,7 +160,7 @@ const gridComponents = {
   Item: ({ children }: { children: any }) => (
     <div
       style={{
-        width: "20%",
+        width: "320px",
         height: "20%",
         color: "white",
       }}>
