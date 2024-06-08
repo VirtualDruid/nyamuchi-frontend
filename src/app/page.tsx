@@ -9,7 +9,9 @@ import { Tooltip } from "@mui/material";
 const episodes = [
   "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 ]
-const host = 'https://anon-tokyo.com';
+const HOST = 'https://anon-tokyo.com';
+const CDN = 'https://cdn.anon-tokyo.com';
+//const API = 'https://api.anon-tokyo.com'
 export default function Home() {
 
   const [segment, setSegment] = useState({ episode: "", frame_current: -1, frame_start: -1, farme_end: -1 })
@@ -94,7 +96,7 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
   }) {
   const debounceChangeCurrentFrame = useCallback(
     _.debounce((frame, episode) => {
-      setFullImageSrc(`${host}/image?frame=${frame}&episode=${episode}`);
+      setFullImageSrc(`${HOST}/image?frame=${frame}&episode=${episode}`);
     }, 300),
     [])
   return (
@@ -193,13 +195,13 @@ const ItemWrapper = ({ index, result, setFullImageSrc, setIsVisible, setSegment,
       <img style={{width:"100%", height:"180px"}}
         onClick={function (e) {
           //initial set
-          setFullImageSrc(`${host}/image?frame=${result.frame_start}&episode=${result.episode}`);
+          setFullImageSrc(`${HOST}/image?frame=${result.frame_start}&episode=${result.episode}`);
           setSegment({ episode: result.episode, frame_current: result.frame_start, frame_start: result.frame_start, frame_end: result.frame_end })
           setIsVisible(true);
           setCurrentFrame(result.frame_start);
         }}
         loading="lazy"
-        src={`https://cdn.anon-tokyo.com/mygo/thumb/thumb/${result.episode}__${result.frame_start}.jpg`} />
+        src={`${CDN}/thumb/thumb/${result.episode}__${result.frame_start}.jpg`} />
     </Tooltip>
 
   </div>
@@ -275,7 +277,7 @@ function match(item: any, keyword: string, episode: string) {
 }
 
 async function getSearchResultList(keyword: string, episode: string) {
-  return await fetch(`${host}/api/search?keyword=${keyword}&episode=${episode}`)
+  return await fetch(`${HOST}/api/search?keyword=${keyword}&episode=${episode}`)
     .then((r) => {
       if (r.ok) {
         return r.json();
