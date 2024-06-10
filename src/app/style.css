@@ -1,0 +1,34 @@
+@media screen and (min-width:1536px) {
+    .result-item{
+        width: calc(98dvw / 5);
+        height: calc(56.25dvw / 5);
+    }
+}
+
+@media screen and (min-width:1200px) and (max-width:1500px) {
+    .result-item{
+        width: calc(98dvw / 4);
+        height: calc(56.25dvw / 4);
+    }
+}
+
+@media screen and (min-width:900px) and (max-width:1200px) {
+    .result-item{
+        width: calc(98dvw / 3);
+        height: calc(56.25dvw / 3);
+    }
+}
+
+@media screen and (min-width:600px) and (max-width:900px) {
+    .result-item{
+        width: calc(98dvw / 3);
+        height: calc(56.25dvw / 3);
+    }
+}
+
+@media screen and (min-width:0px) and (max-width:600px) {
+    .result-item{
+        width: calc(98dvw / 2);
+        height: calc(56.25dvw / 2);
+    }
+}

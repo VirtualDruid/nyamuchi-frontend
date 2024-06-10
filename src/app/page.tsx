@@ -6,6 +6,8 @@ import moment from "moment";
 
 import CloseIcon from '@mui/icons-material/Close';
 import { Tooltip } from "@mui/material";
+
+import "./style.css";
 const episodes = [
   "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 ]
@@ -26,7 +28,7 @@ export default function Home() {
   const [episode, setEpisode] = useState("1-3");
   const handleEpisodeOnChange = (e: React.FormEvent<HTMLSelectElement>) => {
     setEpisode(e.currentTarget.value);
-    setSegment({...segment, episode:episode})
+    setSegment({ ...segment, episode: episode })
   }
 
   const debounceFetchResultList = useCallback(
@@ -123,7 +125,7 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
         height: "auto"
       }}>
 
-        <img style={{width:"100%", height:"fit-content"}} id="full-image" src={fullImageSrc} loading="lazy" />
+        <img style={{ width: "100%", height: "fit-content" }} id="full-image" src={fullImageSrc} loading="lazy" />
         <div style={{ position: "absolute", width: "auto", color: "red", padding: "20px" }}>{`${currentFrame - segment.frame_start}/${segment.frame_end - segment.frame_start}`}</div>
         <CloseIcon onClick={function (e) {
           setFullImageSrc("");
@@ -158,12 +160,7 @@ const gridComponents = {
     </div>
   )),
   Item: ({ children }: { children: any }) => (
-    <div
-      style={{
-        width: "320px",
-        height: "20%",
-        color: "white",
-      }}>
+    <div className="result-item">
       {children}
     </div>
   )
@@ -182,17 +179,24 @@ const ItemWrapper = ({ index, result, setFullImageSrc, setIsVisible, setSegment,
     setSegment: React.Dispatch<any>,
     setCurrentFrame: React.Dispatch<any>
   }) => (
-  <div style={{ width: "100%",minHeight:"180px", height: "180px", display:"flex", flexWrap:"wrap" }}>
+  <div style={{width:"inherit"}}>
 
-    <div style={{ position: "absolute", display: "flex" }}>
-      <div style={{ padding: "4px 4px 4px 8px", background: "rgba(0, 0, 0, 0.3)", fontWeight: "900", fontSize: "12px" }}>{`${index}`}</div>
-      <div style={{ padding: "4px 4px 4px 4px", background: "rgba(0, 0, 0, 0.3)", fontSize: "12px", color: "rgb(51, 129, 175)" }}>{`${result.episode}`}</div>
-      <div style={{ padding: "4px 12px 4px 4px", background: "rgba(0, 0, 0, 0.3)", fontSize: "12px", color: "red" }}>{`${result.frame_start} ~ ${result.frame_end}`}</div>
-      <div style={{ padding: "4px 12px 4px 4px", background: "rgba(1.0, 0, 0, 0.3)", fontSize: "12px" }}>{`${formatFrameStamp(result.frame_start)}`}</div>
+    <div style={{
+      position: "absolute", 
+      display: "flex", 
+      flexWrap: "nowrap", 
+      width:"inherit",
+      maxHeight:"calc(16px + 1.6rem)",
+      textOverflow:"ellipsis",
+      background:"rgba(0, 0, 0, 0.3)"}}>
+      <span style={{padding:"4px", fontSize:"0.8rem", color: "white",  maxLines: "1", textOverflow:"ellipsis"}}>{`${index}`}</span>
+      <span style={{padding:"4px", fontSize:"0.8rem", color: "rgb(51, 129, 175)",  maxLines: "1", textOverflow:"ellipsis"}}>{`${result.episode}`}</span>
+      <span style={{padding:"4px", fontSize:"0.8rem", color: "red",  maxLines: "1", textOverflow:"ellipsis"}}>{`${result.frame_start} ~ ${result.frame_end}`}</span>
+      <span style={{padding:"4px", fontSize:"0.8rem", color: "white",  maxLines: "1", textOverflow:"ellipsis"}}>{`${formatFrameStamp(result.frame_start)}`}</span>
     </div>
 
     <Tooltip title={<h1 style={{ fontSize: "18px" }}>{result.text}</h1>} arrow>
-      <img style={{width:"100%", height:"180px"}}
+      <img className="result-item"
         onClick={function (e) {
           //initial set
           setFullImageSrc(`${HOST}/image?frame=${result.frame_start}&episode=${result.episode}`);
@@ -206,6 +210,12 @@ const ItemWrapper = ({ index, result, setFullImageSrc, setIsVisible, setSegment,
 
   </div>
 );
+/*
+<div style={{ padding: "4px", background: "rgba(0, 0, 0, 0.3)", fontWeight: "900", color: "white", fontSize: "0.7rem" }}>{`${index}`}</div>
+      <div style={{ padding: "4px", background: "rgba(0, 0, 0, 0.3)", fontSize: "0.7rem", color: "rgb(51, 129, 175)" }}>{`${result.episode}`}</div>
+      <div style={{ padding: "4px", background: "rgba(0, 0, 0, 0.3)", fontSize: "0.7rem", color: "red" }}>{`${result.frame_start} ~ ${result.frame_end}`}</div>
+      <div style={{ maxWidth:"25%", padding: "4px", background: "rgba(1.0, 0, 0, 0.3)", fontSize: "0.7rem", color: "white", textOverflow: "ellipsis" }}>{`${formatFrameStamp(result.frame_start)}`}</div>
+ */
 /*
 <Tooltip title={<h1 style={{ fontSize: "18px" }}>{result.text}</h1>} arrow>
       <div style={{
