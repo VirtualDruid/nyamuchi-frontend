@@ -4,12 +4,14 @@ import { VirtuosoGrid, Virtuoso, GridComponents } from "react-virtuoso";
 import * as _ from "lodash";
 import moment from "moment";
 
+import data from './result.json';
+
 import CloseIcon from '@mui/icons-material/Close';
 import { Tooltip } from "@mui/material";
 
 import "./style.css";
 const episodes = [
-  "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
+  "*", "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 ]
 const HOST = 'https://anon-tokyo.com';
 const CDN = 'https://cdn.anon-tokyo.com';
@@ -35,9 +37,9 @@ export default function Home() {
     _.debounce((keyword: string, episode: string) => {
       if (keyword.length !== 0) {
         getSearchResultList(keyword, episode).then((r) => {
-          console.log(keyword);
+          //console.log(keyword);
           //console.log(r);
-          setResultList(r.result);
+          setResultList(r);
         })
       } else {
         setResultList([]);
@@ -269,24 +271,24 @@ function SearchResult({ resultList, setFullImageSrc, setIsVisible, setSegment, s
 }
 
 
-function SearchResult0({ keyword, episode, resultList }: { keyword: string, episode: string, resultList: any[] }) {
+/*function SearchResult0({ keyword, episode, resultList }: { keyword: string, episode: string, resultList: any[] }) {
   //const [resultList, setResultList] = useState([])
   return (
     <Virtuoso className="!h-[100%]" data={resultList} itemContent={(index, result) => (<Result result={result} index={index} />)} />
   );
-}
+}*/
 
 function Result({ result, index }: { result: any, index: number }) {
   return (<div className="result">{`${result.text}`}</div>)
 }
 
 function match(item: any, keyword: string, episode: string) {
-  let ep: boolean = episode == '*' ? true : item.episode == episode;
+  let ep: boolean = episode === '*' ? true : item.episode === episode;
   let text = item.text as string
-  return ep && text.includes(keyword);
+  return (ep && text.toLowerCase().includes(keyword.toLowerCase())) === true;
 }
 
-async function getSearchResultList(keyword: string, episode: string) {
+/*async function getSearchResultList0(keyword: string, episode: string) {
   return await fetch(`${HOST}/api/search?keyword=${keyword}&episode=${episode}`)
     .then((r) => {
       if (r.ok) {
@@ -296,11 +298,10 @@ async function getSearchResultList(keyword: string, episode: string) {
       }
 
     });
-}
-
-/*async function getSearchResultList0(keyword: string, episode: string) {
-  return await Promise.resolve(data as any[]).then(function (r) {
-    console.log(r);
-    return r.filter((item: any) => match(item, keyword, episode));
-  });
 }*/
+
+async function getSearchResultList(keyword: string, episode: string) {
+  return await Promise.resolve(data.result as any[]).then(function (r) {
+    return Promise.resolve(r.filter((item: any) => match(item, keyword, episode)));
+  });
+}
