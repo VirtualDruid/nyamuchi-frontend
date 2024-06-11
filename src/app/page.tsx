@@ -27,7 +27,7 @@ export default function Home() {
   }
   const [resultList, setResultList] = useState<any[]>([])
 
-  const [episode, setEpisode] = useState("1-3");
+  const [episode, setEpisode] = useState("*");
   const handleEpisodeOnChange = (e: React.FormEvent<HTMLSelectElement>) => {
     setEpisode(e.currentTarget.value);
     setSegment({ ...segment, episode: episode })
