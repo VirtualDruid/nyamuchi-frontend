@@ -103,12 +103,12 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
       setFullImageSrc(`${HOST}/image?frame=${frame}&episode=${episode}`);
     }, 300),
     [])
-  const handleCurrentFrameOnChange = (_, value: number) => {
+  const handleCurrentFrameOnChange = (_:any, value: number) => {
     debounceChangeCurrentFrame(value, segment.episode);
     setCurrentFrame(value);
   }
 
-  const handleFullImageOnChange = (e) => {
+  const handleFullImageOnChange = (e:any) => {
     setFullImageSrc("");
     setIsVisible(false);
     setCurrentFrame(0);
