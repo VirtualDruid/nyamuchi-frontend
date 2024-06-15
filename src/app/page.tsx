@@ -103,15 +103,9 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
       setFullImageSrc(`${HOST}/image?frame=${frame}&episode=${episode}`);
     }, 300),
     [])
-  const handleCurrentFrameOnChange = (_:Event, value: number | number[], activeThumb: number) => {
+  const handleCurrentFrameOnChange = (_: Event, value: number | number[], activeThumb: number) => {
     debounceChangeCurrentFrame(value, segment.episode);
     setCurrentFrame(value);
-  }
-
-  const handleFullImageOnChange = (e:Event) => {
-    setFullImageSrc("");
-    setIsVisible(false);
-    setCurrentFrame(0);
   }
   return (
     <div style={{
@@ -133,11 +127,15 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
         width: "100dvw",
         height: "100dvw"
       }}>
-        
+
         <img className="full-image" src={fullImageSrc} loading="lazy" />
 
         <CloseIcon
-          onClick={handleFullImageOnChange}
+          onClick={function (e) {
+            setFullImageSrc("");
+            setIsVisible(false);
+            setCurrentFrame(0);
+          }}
           className="close-button" />
         <Slider
           sx={{
