@@ -1,34 +1,107 @@
 @media screen and (min-width:1536px) {
-    .result-item{
+    .result-item {
         width: calc(98dvw / 5);
         height: calc(56.25dvw / 5);
+    }
+
+    .full-image {
+        width: 60dvw;
+        height: fit-content;
+        margin-left: 20dvw;
+        margin-right: 20dvw;
+    }
+
+    .close-button {
+        position: absolute;
+        width: 10dvh;
+        height: 10dvh;
+        color: red;
+        right: 20dvw;   
     }
 }
 
 @media screen and (min-width:1200px) and (max-width:1500px) {
-    .result-item{
+    .result-item {
         width: calc(98dvw / 4);
         height: calc(56.25dvw / 4);
+
+    }
+
+    .full-image {
+        width: 60dvw;
+        height: fit-content;
+        margin-left: 20dvw;
+        margin-right: 20dvw;
+
+    }
+    .close-button {
+        position: absolute;
+        width: 10dvh;
+        height: 10dvh;
+        color: red;
+        right: 20dvw;   
     }
 }
 
 @media screen and (min-width:900px) and (max-width:1200px) {
-    .result-item{
+    .result-item {
         width: calc(98dvw / 3);
         height: calc(56.25dvw / 3);
+    }
+
+    .full-image {
+        width: 60dvw;
+        height: fit-content;
+        margin-left: 20dvw;
+        margin-right: 20dvw;
+    }
+    .close-button {
+        position: absolute;
+        width: 10dvh;
+        height: 10dvh;
+        color: red;
+        right: 20dvw;   
     }
 }
 
 @media screen and (min-width:600px) and (max-width:900px) {
-    .result-item{
+    .result-item {
         width: calc(98dvw / 3);
         height: calc(56.25dvw / 3);
+    }
+
+    .full-image {
+        width: 100dvw;
+        height: fit-content;
+        margin-top: 20dvh;
+    }
+    .close-button {
+        position: absolute;
+        width: 10dvh;
+        height: 10dvh;
+        color: red;
+        right: 10dvw;   
+        top: 10dvh; 
     }
 }
 
 @media screen and (min-width:0px) and (max-width:600px) {
-    .result-item{
+    .result-item {
         width: calc(98dvw / 2);
         height: calc(56.25dvw / 2);
+    }
+
+    .full-image {
+        width: 100dvw;
+        height: fit-content;
+        margin-top: 20dvh;
+    }
+    .close-button {
+        position: absolute;
+        width: 10dvh;
+        height: 10dvh;
+        color: red;
+        right: 10dvw;  
+        top: 10dvh; 
     }
 }

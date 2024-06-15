@@ -7,7 +7,7 @@ import moment from "moment";
 import data from './result.json';
 
 import CloseIcon from '@mui/icons-material/Close';
-import { Tooltip } from "@mui/material";
+import { Tooltip, Slider, Chip } from "@mui/material";
 
 import "./style.css";
 const episodes = [
@@ -61,7 +61,7 @@ export default function Home() {
 
   return (
     <>
-      <div style={{ position: "relative", width: "100%", height: "100%", backgroundColor: "rgba(51, 129, 175, 0.7)" }}>
+      <div style={{ position: "relative", width: "100%", height: "100%", backgroundColor: "rgb(51, 129, 175)" }}>
 
         <SearchResult resultList={resultList} setFullImageSrc={setFullImageSrc} setIsVisible={setIsVisible} setSegment={setSegment} setCurrentFrame={setCurrentFrame} />
         <div style={{ position: "fixed", top: "0px" }}>
@@ -103,6 +103,16 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
       setFullImageSrc(`${HOST}/image?frame=${frame}&episode=${episode}`);
     }, 300),
     [])
+  const handleCurrentFrameOnChange = (_, value: number) => {
+    debounceChangeCurrentFrame(value, segment.episode);
+    setCurrentFrame(value);
+  }
+
+  const handleFullImageOnChange = (e) => {
+    setFullImageSrc("");
+    setIsVisible(false);
+    setCurrentFrame(0);
+  }
   return (
     <div style={{
       position: "fixed",
@@ -120,27 +130,52 @@ function FullImageContainer({ fullImageSrc, setFullImageSrc, isVisible, setIsVis
     }}>
 
       <div style={{
-        display: "flex",
-        flexWrap: "wrap",
-        position: "relative",
-        width: "auto",
-        height: "auto"
+        width: "100dvw",
+        height: "100dvw"
       }}>
+        
+        <img className="full-image" src={fullImageSrc} loading="lazy" />
 
-        <img style={{ width: "100%", height: "fit-content" }} id="full-image" src={fullImageSrc} loading="lazy" />
-        <div style={{ position: "absolute", width: "auto", color: "red", padding: "20px" }}>{`${currentFrame - segment.frame_start}/${segment.frame_end - segment.frame_start}`}</div>
-        <CloseIcon onClick={function (e) {
-          setFullImageSrc("");
-          setIsVisible(false);
-          setCurrentFrame(0);
-        }}
-          style={{ position: "absolute", width: "60px", height: "60px", color: "red", right: "20px" }} />
-        <input type="range"
-          onChange={function (e) {
-            debounceChangeCurrentFrame(e.currentTarget.value, segment.episode);
-            setCurrentFrame(e.currentTarget.value);
+        <CloseIcon
+          onClick={handleFullImageOnChange}
+          className="close-button" />
+        <Slider
+          sx={{
+            '& .MuiSlider-thumb': {
+              color: "rgb(51, 129, 175)"
+            },
+            '& .MuiSlider-track': {
+              color: "rgb(51, 129, 175)",
+              height: 8
+            },
+            '& .MuiSlider-rail': {
+              color: "white",
+              height: 20
+            },
+            '& .MuiSlider-active': {
+              color: "rgb(51, 129, 175)"
+            },
+            '& .MuiSlider-mark': {
+              color: "black",
+              height: 2,
+              width: 2
+            },
+            '& .MuiSlider-markActive': {
+              color: "white",
+              height: 2,
+              width: 2
+            }
           }}
-          style={{ position: "absolute", width: "100%", height: "auto", bottom: "20px" }} value={currentFrame} min={segment.frame_start} max={segment.frame_end}></input>
+          onChange={handleCurrentFrameOnChange}
+          valueLabelDisplay="auto"
+          style={{ marginLeft: "10dvw", marginRight: "10dvw", marginTop: "10dvh", width: "80dvw", height: "0px" }}
+          value={currentFrame}
+          marks
+          step={1}
+          min={segment.frame_start}
+          max={segment.frame_end} />
+
+        <Chip style={{ marginLeft: "10dvw" }} color="primary" sx={{ '& .MuiSlider-colorPrimary': "rgb(51, 129, 175)" }} label={`${currentFrame - segment.frame_start}/${segment.frame_end - segment.frame_start}`} />
 
       </div>
 
@@ -181,20 +216,21 @@ const ItemWrapper = ({ index, result, setFullImageSrc, setIsVisible, setSegment,
     setSegment: React.Dispatch<any>,
     setCurrentFrame: React.Dispatch<any>
   }) => (
-  <div style={{width:"inherit"}}>
+  <div style={{ width: "inherit" }}>
 
     <div style={{
-      position: "absolute", 
-      display: "flex", 
-      flexWrap: "nowrap", 
-      width:"inherit",
-      maxHeight:"calc(16px + 1.6rem)",
-      textOverflow:"ellipsis",
-      background:"rgba(0, 0, 0, 0.3)"}}>
-      <span style={{padding:"4px", fontSize:"0.8rem", color: "white",  maxLines: "1", textOverflow:"ellipsis"}}>{`${index}`}</span>
-      <span style={{padding:"4px", fontSize:"0.8rem", color: "rgb(51, 129, 175)",  maxLines: "1", textOverflow:"ellipsis"}}>{`${result.episode}`}</span>
-      <span style={{padding:"4px", fontSize:"0.8rem", color: "red",  maxLines: "1", textOverflow:"ellipsis"}}>{`${result.frame_start} ~ ${result.frame_end}`}</span>
-      <span style={{padding:"4px", fontSize:"0.8rem", color: "white",  maxLines: "1", textOverflow:"ellipsis"}}>{`${formatFrameStamp(result.frame_start)}`}</span>
+      position: "absolute",
+      display: "flex",
+      flexWrap: "nowrap",
+      width: "inherit",
+      maxHeight: "calc(16px + 1.6rem)",
+      textOverflow: "ellipsis",
+      background: "rgba(0, 0, 0, 0.3)"
+    }}>
+      <span style={{ padding: "4px", fontSize: "0.8rem", color: "white", maxLines: "1", textOverflow: "ellipsis" }}>{`${index}`}</span>
+      <span style={{ padding: "4px", fontSize: "0.8rem", color: "rgb(51, 129, 175)", maxLines: "1", textOverflow: "ellipsis" }}>{`${result.episode}`}</span>
+      <span style={{ padding: "4px", fontSize: "0.8rem", color: "red", maxLines: "1", textOverflow: "ellipsis" }}>{`${result.frame_start} ~ ${result.frame_end}`}</span>
+      <span style={{ padding: "4px", fontSize: "0.8rem", color: "white", maxLines: "1", textOverflow: "ellipsis" }}>{`${formatFrameStamp(result.frame_start)}`}</span>
     </div>
 
     <Tooltip title={<h1 style={{ fontSize: "18px" }}>{result.text}</h1>} arrow>
