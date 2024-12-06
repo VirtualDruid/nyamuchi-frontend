@@ -2,14 +2,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as _ from "lodash";
 
-import data from "./result.json";
-import { episodes, SITE_THEME_COLOR, HINT_LINK, HOST } from "./config";
-import { Checkbox, Chip, NoSsr } from "@mui/material";
+import data from "@/app/result.json";
+import { episodes, SITE_THEME_COLOR, HINT_LINK } from "./config";
+import { Chip, NoSsr } from "@mui/material";
 
 import SearchResult from "@/app/components/SearchResult";
 import FullImageContainer from "@/app/components/image-container/FullImageContainer";
 
-import "./style.css";
+import "@/app/style.css";
 import {
   clearExternalParam,
   clearPageStateFromUrlHash,
@@ -19,7 +19,7 @@ import {
   setPageStateToUrlHash,
 } from "./url-hash";
 import { AddLinkOutlined } from "@mui/icons-material";
-import dynamic from "next/dynamic";
+
 /* const episodes = [
   "*", "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 ]
@@ -58,15 +58,12 @@ export default function Home() {
   );
   const handleEpisodeOnChange = (e: React.FormEvent<HTMLSelectElement>) => {
     setEpisode(e.currentTarget.value);
-    //setSegment({ ...segment, episode: episode })
   };
 
   const debounceFetchResultList = useCallback(
     _.debounce((keyword: string, episode: string) => {
       if (keyword.length !== 0) {
         getSearchResultList(keyword, episode).then((r) => {
-          //console.log(keyword);
-          //console.log(r);
           setResultList(r);
         });
       } else {
@@ -80,13 +77,8 @@ export default function Home() {
     debounceFetchResultList(keyword, episode);
   }, [keyword, episode]);
 
-  //const [fullImage, setFullImage] = useState({ isVisible: false, episode: "", src: "", start: 0, end: 0 });
   const [fullImageSrc, setFullImageSrc] = useState("");
-  const [startImageSrc, setStartImageSrc] = useState("");
-  const [endImageSrc, setEndImageSrc] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
-  const [isGifMode, setIsGifMode] = useState(false);
 
   const [currentFrame, setCurrentFrame] = useState(-1);
 
@@ -96,11 +88,6 @@ export default function Home() {
   const [timelineEpisodeState, setTimelineEpisodeState] = useState(episodes[1]);
 
   const [frameRangeStartEnd, setFrameRangeStartEnd] = useState([-1, -1] as [
-    number,
-    number,
-  ]);
-
-  const [gifRangeStartEnd, setGifRangeStartEnd] = useState([-1, -1] as [
     number,
     number,
   ]);
@@ -139,7 +126,6 @@ export default function Home() {
           setTimelineEpisodeState={setTimelineEpisodeState}
           setFullImageSrc={setFullImageSrc}
           setIsVisible={setIsVisible}
-          //setSegment={setSegment}
           setSegmentId={setSegmentId}
           segmentIdRef={segmentIdRef}
           setFrameRangeStartEnd={setFrameRangeStartEnd}
@@ -213,23 +199,12 @@ export default function Home() {
             setTimelineEpisodeState={setTimelineEpisodeState}
             fullImageSrc={fullImageSrc}
             setFullImageSrc={setFullImageSrc}
-            startImageSrc={startImageSrc}
-            setGifStartImageSrc={setStartImageSrc}
-            endImageSrc={endImageSrc}
-            setGifEndImageSrc={setEndImageSrc}
             isVisible={isVisible}
             setIsVisible={setIsVisible}
-            isGifMode={isGifMode}
-            setIsGifMode={setIsGifMode}
-            //segment={segment}
-            //setSegment={setSegment}
-            //segmentId={segmentId}
             setSegmentId={setSegmentId}
             segmentIdRef={segmentIdRef}
             frameRangeStartEnd={frameRangeStartEnd}
             setFrameRangeStartEnd={setFrameRangeStartEnd}
-            gifRangeStartEnd={gifRangeStartEnd}
-            setGifRangeStartEnd={setGifRangeStartEnd}
             currentFrame={currentFrame}
             setCurrentFrame={setCurrentFrame}
           ></FullImageContainer>

@@ -12,7 +12,6 @@ export default function SearchResult({
   setTimelineEpisodeState,
   setFullImageSrc,
   setIsVisible,
-  //setSegment,
   setSegmentId,
   segmentIdRef,
   setFrameRangeStartEnd: setFrameStartEnd,
@@ -22,7 +21,6 @@ export default function SearchResult({
   setTimelineEpisodeState: React.Dispatch<string>;
   setFullImageSrc: React.Dispatch<string>;
   setIsVisible: React.Dispatch<boolean>;
-  //setSegment: React.Dispatch<any>,
   setSegmentId: React.Dispatch<number>;
   segmentIdRef: React.MutableRefObject<number>;
   setFrameRangeStartEnd: React.Dispatch<[number, number]>;
@@ -43,7 +41,6 @@ export default function SearchResult({
             setTimelineEpisodeState={setTimelineEpisodeState}
             setFullImageSrc={setFullImageSrc}
             setIsVisible={setIsVisible}
-            //setSegment={setSegment}
             setSegmentId={setSegmentId}
             segmentIdRef={segmentIdRef}
             setFrameStartEnd={setFrameStartEnd}
