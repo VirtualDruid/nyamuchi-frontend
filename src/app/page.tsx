@@ -1,8 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as _ from "lodash";
-
-import data from "./result.json";
 import data_a from "./result_a.json"
 import { EPISODE_CHOICE, SITE_THEME_COLOR_1, HINT_LINK, HOST, SITE_THEME_COLOR_2 } from "./config";
 import { Checkbox, Chip, NoSsr } from "@mui/material";
@@ -20,7 +18,6 @@ import {
   setPageStateToUrlHash,
 } from "./url-hash";
 import { AddLinkOutlined } from "@mui/icons-material";
-import dynamic from "next/dynamic";
 
 /* const episodes = [
   "*", "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
@@ -255,7 +252,6 @@ function lowerCaseContainsKeyword(item: any, keyword: string): boolean {
 async function getSearchResultList(keyword: string, episode: string): Promise<any[]> {
   return await Promise.resolve(data_a as any).then(function (d) {
     let result: any[] = [];
-    console.log(keyword);
     if (episode.includes("*")) {
       //wildcard
       EPISODE_CHOICE.forEach((choice) => {
@@ -269,7 +265,6 @@ async function getSearchResultList(keyword: string, episode: string): Promise<an
       let matched: any[] = d[episode].filter((row: any) => lowerCaseContainsKeyword(row, keyword));
       result = result.concat(matched);
     }
-    console.log(JSON.stringify(result));
     return Promise.resolve(
       result
     );
