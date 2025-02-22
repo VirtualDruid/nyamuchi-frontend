@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import * as _ from "lodash";
 import data_a from '@/app/result_a.json';
 
@@ -30,23 +30,12 @@ export default function FullImageContainer({
   setTimelineEpisodeState,
   fullImageSrc,
   setFullImageSrc,
-  startImageSrc,
-  setGifStartImageSrc: setGifStartImageSrc,
-  endImageSrc,
-  setGifEndImageSrc: setGifEndImageSrc,
   isVisible,
   setIsVisible,
-  isGifMode,
-  setIsGifMode,
-  //segment,
-  //setSegment,
-  //segmentId,
   setSegmentId,
   segmentIdRef,
   frameRangeStartEnd,
   setFrameRangeStartEnd,
-  gifRangeStartEnd,
-  setGifRangeStartEnd,
   currentFrame,
   setCurrentFrame,
 }: {
@@ -54,26 +43,23 @@ export default function FullImageContainer({
   setTimelineEpisodeState: React.Dispatch<string>;
   fullImageSrc: string;
   setFullImageSrc: React.Dispatch<string>;
-  startImageSrc: string;
-  setGifStartImageSrc: React.Dispatch<string>;
-  endImageSrc: string;
-  setGifEndImageSrc: React.Dispatch<string>;
   isVisible: boolean;
   setIsVisible: React.Dispatch<boolean>;
-  isGifMode: boolean;
-  setIsGifMode: React.Dispatch<boolean>;
-  //segment: any,
-  //setSegment: React.Dispatch<any>,
-  //segmentId: number,
   setSegmentId: React.Dispatch<number>;
   segmentIdRef: React.MutableRefObject<number>;
   frameRangeStartEnd: [number, number];
   setFrameRangeStartEnd: React.Dispatch<[number, number]>;
-  gifRangeStartEnd: [number, number];
-  setGifRangeStartEnd: React.Dispatch<[number, number]>;
   currentFrame: number;
   setCurrentFrame: React.Dispatch<number>;
 }) {
+  const [isGifMode, setIsGifMode] = useState(false);
+  const [gifStartImageSrc, setGifStartImageSrc] = useState("");
+  const [gifEndImageSrc, setGifEndImageSrc] = useState("");
+  const [gifRangeStartEnd, setGifRangeStartEnd] = useState([-1, -1] as [
+    number,
+    number,
+  ]);
+
   const theme = useTheme();
   const large: boolean = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -247,7 +233,7 @@ export default function FullImageContainer({
 
               <img
                 id="gif-start-frame"
-                src={startImageSrc}
+                src={gifStartImageSrc}
                 className={
                   isGifMode && isVisible
                     ? "gif-start-end-frame-image-visible"
@@ -276,7 +262,7 @@ export default function FullImageContainer({
 
               <img
                 id="gif-end-frame"
-                src={endImageSrc}
+                src={gifEndImageSrc}
                 className={
                   isGifMode && isVisible
                     ? "gif-start-end-frame-image-visible"

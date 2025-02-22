@@ -10,7 +10,7 @@ import { Checkbox, Chip, NoSsr } from "@mui/material";
 import SearchResult from "@/app/components/SearchResult";
 import FullImageContainer from "@/app/components/image-container/FullImageContainer";
 
-import "./style.css";
+import "@/app/style.css";
 import {
   clearExternalParam,
   clearPageStateFromUrlHash,
@@ -69,8 +69,6 @@ export default function Home() {
     _.debounce((keyword: string, episode: string) => {
       if (keyword.length !== 0) {
         getSearchResultList(keyword, episode).then((r) => {
-          //console.log(keyword);
-          //console.log(r);
           setResultList(r);
         });
       } else {
@@ -84,13 +82,8 @@ export default function Home() {
     debounceFetchResultList(keyword, episodeChoice);
   }, [keyword, episodeChoice]);
 
-  //const [fullImage, setFullImage] = useState({ isVisible: false, episode: "", src: "", start: 0, end: 0 });
   const [fullImageSrc, setFullImageSrc] = useState("");
-  const [startImageSrc, setStartImageSrc] = useState("");
-  const [endImageSrc, setEndImageSrc] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
-  const [isGifMode, setIsGifMode] = useState(false);
 
   const [currentFrame, setCurrentFrame] = useState(-1);
 
@@ -100,11 +93,6 @@ export default function Home() {
   const [timelineEpisodeState, setTimelineEpisodeState] = useState(EPISODE_CHOICE[1]);
 
   const [frameRangeStartEnd, setFrameRangeStartEnd] = useState([-1, -1] as [
-    number,
-    number,
-  ]);
-
-  const [gifRangeStartEnd, setGifRangeStartEnd] = useState([-1, -1] as [
     number,
     number,
   ]);
@@ -144,7 +132,6 @@ export default function Home() {
           setTimelineEpisodeState={setTimelineEpisodeState}
           setFullImageSrc={setFullImageSrc}
           setIsVisible={setIsVisible}
-          //setSegment={setSegment}
           setSegmentId={setSegmentId}
           segmentIdRef={segmentIdRef}
           setFrameRangeStartEnd={setFrameRangeStartEnd}
@@ -218,23 +205,12 @@ export default function Home() {
             setTimelineEpisodeState={setTimelineEpisodeState}
             fullImageSrc={fullImageSrc}
             setFullImageSrc={setFullImageSrc}
-            startImageSrc={startImageSrc}
-            setGifStartImageSrc={setStartImageSrc}
-            endImageSrc={endImageSrc}
-            setGifEndImageSrc={setEndImageSrc}
             isVisible={isVisible}
             setIsVisible={setIsVisible}
-            isGifMode={isGifMode}
-            setIsGifMode={setIsGifMode}
-            //segment={segment}
-            //setSegment={setSegment}
-            //segmentId={segmentId}
             setSegmentId={setSegmentId}
             segmentIdRef={segmentIdRef}
             frameRangeStartEnd={frameRangeStartEnd}
             setFrameRangeStartEnd={setFrameRangeStartEnd}
-            gifRangeStartEnd={gifRangeStartEnd}
-            setGifRangeStartEnd={setGifRangeStartEnd}
             currentFrame={currentFrame}
             setCurrentFrame={setCurrentFrame}
           ></FullImageContainer>

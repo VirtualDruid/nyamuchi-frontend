@@ -124,8 +124,7 @@ export default function Timeline({
     setFrameRangeStartEnd([seg.frame_start, seg.frame_end]);
     setCurrentFrame(seg.frame_start);
   };
-  //console.log(slice);
-  //console.log(segmentIdRef.current);
+
   const selectHandler = function ({
     chartWrapper,
     google,
