@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import * as _ from "lodash";
-import data from "@/app/result.json";
+//import data from "@/app/result.json";
 
-import { HOST, SITE_THEME_COLOR } from "@/app/config";
+import { HOST, SITE_THEME_COLOR_1, SITE_THEME_COLOR_2 } from "@/app/config";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton, useMediaQuery, useTheme } from "@mui/material";
@@ -14,6 +14,7 @@ import {
 import moment from "moment";
 
 export default function Timeline({
+  fullData,
   setTimelineEpisodeState,
   setFullImageSrc,
   isGifMode,
@@ -25,6 +26,7 @@ export default function Timeline({
   setFrameRangeStartEnd,
   setCurrentFrame,
 }: {
+  fullData: any[],
   setTimelineEpisodeState: React.Dispatch<string>;
   setFullImageSrc: React.Dispatch<string>;
   isGifMode: boolean;
@@ -36,9 +38,9 @@ export default function Timeline({
   setFrameRangeStartEnd: React.Dispatch<[number, number]>;
   setCurrentFrame: React.Dispatch<number>;
 }) {
-  const sg = data.result[segmentIdRef.current];
+  const sg = fullData[segmentIdRef.current];
   const pos = sg.segment_id;
-  const slice = getTimelineSlice(pos);
+  const slice = getTimelineSlice(pos, fullData);
   const sliceRef = useRef(slice);
   sliceRef.current = slice;
   const isGifModeRef = useRef(isGifMode);
@@ -98,10 +100,10 @@ export default function Timeline({
     ]),
   ];
 
-  const setNewSegment = (seg: any) => {
+  const setNewSegment = (seg: any, fullData: any[]) => {
     const newSegmentId = seg.segment_id;
-    if (newSegmentId >= 0 && newSegmentId < data.result.length) {
-      sliceRef.current = getTimelineSlice(newSegmentId);
+    if (newSegmentId >= 0 && newSegmentId < fullData.length) {
+      sliceRef.current = getTimelineSlice(newSegmentId, fullData);
       setSegmentId(newSegmentId);
       segmentIdRef.current = newSegmentId;
     }
@@ -134,7 +136,7 @@ export default function Timeline({
     const chart = chartWrapper.getChart();
     const selection = chart.getSelection()[0]["row"];
     const seg = sliceRef.current[selection];
-    setNewSegment(seg);
+    setNewSegment(seg, fullData);
   };
 
   const selectEvent: ReactGoogleChartEvent = {
@@ -144,6 +146,8 @@ export default function Timeline({
 
   const theme = useTheme();
   const large: boolean = useMediaQuery(theme.breakpoints.up("sm"));
+
+  const themeColor = sg.episode.includes("AveMujica") ? SITE_THEME_COLOR_2 : SITE_THEME_COLOR_1;
 
   return (
     <div style={{ background: "white" }}>
@@ -175,13 +179,13 @@ export default function Timeline({
         }}
       >
         <IconButton
-          style={{ background: SITE_THEME_COLOR, color: "white" }}
+          style={{ background: themeColor, color: "white" }}
           onClick={() => {
             const next = Math.min(
               Math.max(currentIndex - 2, 0),
-              sliceRef.current.length,
+              sliceRef.current.length - 1,
             );
-            setNewSegment(sliceRef.current[next]);
+            setNewSegment(sliceRef.current[next], fullData);
           }}
         >
           <ArrowBackIcon />
@@ -190,12 +194,12 @@ export default function Timeline({
           onClick={() => {
             const next = Math.min(
               Math.max(currentIndex + 2, 0),
-              sliceRef.current.length,
+              sliceRef.current.length - 1,
             );
-            setNewSegment(sliceRef.current[next]);
+            setNewSegment(sliceRef.current[next], fullData);
           }}
           style={{
-            background: SITE_THEME_COLOR,
+            background: themeColor,
             color: "white",
             marginLeft: "32px",
           }}
@@ -207,20 +211,20 @@ export default function Timeline({
   );
 }
 
-function getTimelineSlice(segmentId: number): any[] {
+function getTimelineSlice(segmentId: number, fullData: any[]): any[] {
   const offset = 3;
   //clamp
-  const start = Math.min(Math.max(segmentId - offset, 0), data.result.length);
-  const end = Math.min(Math.max(segmentId + offset + 1, 0), data.result.length);
-  const slice = data.result.slice(start, end);
+  const start = Math.min(Math.max(segmentId - offset, 0), fullData.length);
+  const end = Math.min(Math.max(segmentId + offset + 1, 0), fullData.length);
+  const slice = fullData.slice(start, end);
   const textlessAndTextful: any[] = [];
   slice.forEach((e) => {
     textlessAndTextful.push(e);
     const textlessStart = e.frame_end + 1;
     const next = e.segment_id + 1;
 
-    if (next > 0 && next < data.result.length) {
-      const textlessEnd = data.result[next].frame_start - 1;
+    if (next > 0 && next < fullData.length) {
+      const textlessEnd = fullData[next].frame_start - 1;
       if (textlessEnd > textlessStart) {
         textlessAndTextful.push({
           episode: e.episode,

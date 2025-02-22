@@ -3,7 +3,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as _ from "lodash";
 
 import data from "./result.json";
-import { episodes, SITE_THEME_COLOR, HINT_LINK, HOST } from "./config";
+import data_a from "./result_a.json"
+import { EPISODE_CHOICE, SITE_THEME_COLOR_1, HINT_LINK, HOST, SITE_THEME_COLOR_2 } from "./config";
 import { Checkbox, Chip, NoSsr } from "@mui/material";
 
 import SearchResult from "@/app/components/SearchResult";
@@ -20,6 +21,7 @@ import {
 } from "./url-hash";
 import { AddLinkOutlined } from "@mui/icons-material";
 import dynamic from "next/dynamic";
+
 /* const episodes = [
   "*", "1-3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"
 ]
@@ -50,15 +52,17 @@ export default function Home() {
   };
   const [resultList, setResultList] = useState<any[]>([]);
 
-  const [episode, setEpisode]: [string, React.Dispatch<string>] = useState(
+  const [episodeChoice, setEpisodeChoice]: [string, React.Dispatch<string>] = useState(
     () =>
       _.isString(pageStateRef.current.episode)
         ? pageStateRef.current.episode
         : "*",
   );
-  const handleEpisodeOnChange = (e: React.FormEvent<HTMLSelectElement>) => {
-    setEpisode(e.currentTarget.value);
+  const handleEpisodeChoiceOnChange = (e: React.FormEvent<HTMLSelectElement>) => {
+    setEpisodeChoice(e.currentTarget.value);
     //setSegment({ ...segment, episode: episode })
+    const color = e.currentTarget.value.includes("AveMujica") ? SITE_THEME_COLOR_2 : SITE_THEME_COLOR_1;
+    setThemeColor(color);
   };
 
   const debounceFetchResultList = useCallback(
@@ -77,8 +81,8 @@ export default function Home() {
   );
 
   useEffect(() => {
-    debounceFetchResultList(keyword, episode);
-  }, [keyword, episode]);
+    debounceFetchResultList(keyword, episodeChoice);
+  }, [keyword, episodeChoice]);
 
   //const [fullImage, setFullImage] = useState({ isVisible: false, episode: "", src: "", start: 0, end: 0 });
   const [fullImageSrc, setFullImageSrc] = useState("");
@@ -93,7 +97,7 @@ export default function Home() {
   const [segmentId, setSegmentId] = useState(0);
 
   //episode can be "*" wildcard, but timeline needs to be specific episode
-  const [timelineEpisodeState, setTimelineEpisodeState] = useState(episodes[1]);
+  const [timelineEpisodeState, setTimelineEpisodeState] = useState(EPISODE_CHOICE[1]);
 
   const [frameRangeStartEnd, setFrameRangeStartEnd] = useState([-1, -1] as [
     number,
@@ -110,7 +114,7 @@ export default function Home() {
   useEffect(() => {
     const state = {
       keyword: keyword,
-      episode: episode,
+      episode: episodeChoice,
     };
     clearExternalParam();
     mergePageState(state, pageStateRef);
@@ -122,16 +126,17 @@ export default function Home() {
     }
 
     //console.log(JSON.stringify(pageStateRef.current));
-  }, [keyword, episode, appendPageState]);
-
+  }, [keyword, episodeChoice, appendPageState]);
+  const [themeColor, setThemeColor]: [string, React.Dispatch<string>] = useState(episodeChoice.includes("AveMujica") ? SITE_THEME_COLOR_2 : SITE_THEME_COLOR_1);
   return (
     <NoSsr>
       <div
+        id="root-container"
         style={{
           position: "relative",
-          width: "100%",
-          height: "100%",
-          backgroundColor: SITE_THEME_COLOR,
+          width: "100dvw",
+          height: "100dvh",
+          backgroundColor: themeColor,
         }}
       >
         <SearchResult
@@ -166,9 +171,9 @@ export default function Home() {
           />
           <select
             style={{ position: "relative", padding: "0.5rem", opacity: "0.7" }}
-            onChange={handleEpisodeOnChange}
+            onChange={handleEpisodeChoiceOnChange}
           >
-            {episodes.map((e) => {
+            {EPISODE_CHOICE.map((e) => {
               return (
                 <option value={e} key={e}>
                   {e}
@@ -239,7 +244,7 @@ export default function Home() {
   );
 }
 
-function match(item: any, keyword: string, episode: string) {
+/* function match(item: any, keyword: string, episode: string) {
   let ep: boolean = episode === "*" ? true : item.episode === episode;
   let text = item.text as string;
   let text_sim = item.text_sim as string;
@@ -254,4 +259,44 @@ async function getSearchResultList(keyword: string, episode: string) {
       r.filter((item: any) => match(item, keyword, episode)),
     );
   });
+}*/
+
+/*function match(item: any, keyword: string, episode: string) {
+  let ep: boolean = episode === "*" ? true : item.episode === episode;
+  let text = item.text as string;
+  let text_sim = item.text_sim as string;
+  let textMatch = text.toLowerCase().includes(keyword.toLowerCase());
+  let textSimMatch = text_sim.toLowerCase().includes(keyword.toLowerCase());
+  return (ep && (textMatch || textSimMatch)) === true;
+}*/
+
+function lowerCaseContainsKeyword(item: any, keyword: string): boolean {
+  let text = item.text;
+  let textMatch = text.toLowerCase().includes(keyword.toLowerCase());
+  return textMatch === true;
 }
+
+async function getSearchResultList(keyword: string, episode: string): Promise<any[]> {
+  return await Promise.resolve(data_a as any).then(function (d) {
+    let result: any[] = [];
+    console.log(keyword);
+    if (episode.includes("*")) {
+      //wildcard
+      EPISODE_CHOICE.forEach((choice) => {
+        if (choice.includes(episode.replace("*", ""))) {
+          let matched: any[] = (d[choice] ?? []).filter((row: any) => lowerCaseContainsKeyword(row, keyword));
+          result = result.concat(matched);
+        }
+      })
+    } else {
+      //specific episode
+      let matched: any[] = d[episode].filter((row: any) => lowerCaseContainsKeyword(row, keyword));
+      result = result.concat(matched);
+    }
+    console.log(JSON.stringify(result));
+    return Promise.resolve(
+      result
+    );
+  });
+}
+

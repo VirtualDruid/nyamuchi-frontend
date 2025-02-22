@@ -4,7 +4,7 @@ import { VirtuosoGrid, Virtuoso, GridComponents } from "react-virtuoso";
 import * as _ from "lodash";
 import moment from "moment";
 
-import { HOST, CDN, SITE_THEME_COLOR, THUMB_PATH } from "@/app/config";
+import { HOST, CDN, SITE_THEME_COLOR_1, THUMB_PATH, SITE_THEME_COLOR_2 } from "@/app/config";
 import { Tooltip, Chip } from "@mui/material";
 
 export default function SearchResult({
@@ -32,7 +32,7 @@ export default function SearchResult({
     <>
       <VirtuosoGrid
         useWindowScroll
-        style={{ height: "100%" }}
+        style={{ height: "100%"}}
         totalCount={resultList.length}
         data={resultList}
         components={gridComponents as GridComponents}
@@ -106,7 +106,11 @@ const ItemWrapper = ({
         style={{
           padding: "4px",
           fontSize: "0.8rem",
-          color: SITE_THEME_COLOR,
+          fontWeight: "bold",
+          fontFamily: "sans-serif",
+          textShadow: "-0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff, 0.5px 0.5px 0 #fff, " + 
+          "1px 0px 0 #fff, -1px 0px 0 #fff, 0px 1px 0 #fff, 0px -1px 0 #fff",
+          color: result.episode.includes("AveMujica") ? SITE_THEME_COLOR_2 : SITE_THEME_COLOR_1,
           maxLines: "1",
           textOverflow: "ellipsis",
         }}

@@ -11,7 +11,7 @@ import {
   GSC_TOKEN,
   SITE_DESCRIPTION,
   SITE_PREVIEW,
-  SITE_THEME_COLOR,
+  SITE_THEME_COLOR_1,
   SITE_TITLE,
   SITE_URL,
 } from "./config";
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      style={{ backgroundColor: SITE_THEME_COLOR, height: "100%" }}
+      style={{ backgroundColor:"rgba(0,0,0,0)", height: "100%" }}
     >
       <head>
         <title>{SITE_TITLE}</title>

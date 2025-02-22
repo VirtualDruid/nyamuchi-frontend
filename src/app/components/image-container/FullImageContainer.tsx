@@ -1,7 +1,8 @@
 import React, { useCallback } from "react";
 import * as _ from "lodash";
+import data_a from '@/app/result_a.json';
 
-import { HOST, SITE_THEME_COLOR } from "@/app/config";
+import { HOST, SITE_THEME_COLOR_1, SITE_THEME_COLOR_2 } from "@/app/config";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Tooltip,
@@ -182,6 +183,9 @@ export default function FullImageContainer({
     e.stopPropagation();
     e.preventDefault();
   };
+
+  const themeColor = timelineEpisodeState.includes("AveMujica") ? SITE_THEME_COLOR_2 : SITE_THEME_COLOR_1;
+
   return (
     <NoSsr>
       <div
@@ -377,10 +381,9 @@ export default function FullImageContainer({
                   position: large ? "absolute" : "relative",
                   left: large ? "0dvw" : "45dvw",
                 }}
-                sx={{ backgroundColor: SITE_THEME_COLOR, color: "white" }}
-                label={`${currentFrame - frameRangeStartEnd[0]}/${
-                  frameRangeStartEnd[1] - frameRangeStartEnd[0]
-                }`}
+                sx={{ backgroundColor: themeColor, color: "white" }}
+                label={`${currentFrame - frameRangeStartEnd[0]}/${frameRangeStartEnd[1] - frameRangeStartEnd[0]
+                  }`}
               />
             </Tooltip>
           }
@@ -388,10 +391,10 @@ export default function FullImageContainer({
             id="frame-slider"
             sx={{
               "& .MuiSlider-thumb": {
-                color: SITE_THEME_COLOR,
+                color: themeColor,
               },
               "& .MuiSlider-track": {
-                color: SITE_THEME_COLOR,
+                color: themeColor,
                 height: 8,
               },
               "& .MuiSlider-rail": {
@@ -399,7 +402,7 @@ export default function FullImageContainer({
                 height: 20,
               },
               "& .MuiSlider-active": {
-                color: SITE_THEME_COLOR,
+                color: themeColor,
               },
               "& .MuiSlider-mark": {
                 color: "black",
@@ -412,7 +415,7 @@ export default function FullImageContainer({
                 width: 2,
               },
               "& .MuiSlider-valueLabel": {
-                backgroundColor: SITE_THEME_COLOR,
+                backgroundColor: themeColor,
                 color: "white",
               },
             }}
@@ -433,6 +436,7 @@ export default function FullImageContainer({
           />
 
           <Timeline
+            fullData={ (data_a as any)[timelineEpisodeState] ?? (data_a as any)["MyGO_01"] }
             setTimelineEpisodeState={setTimelineEpisodeState}
             setFullImageSrc={setFullImageSrc}
             isGifMode={isGifMode}
